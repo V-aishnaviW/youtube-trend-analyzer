@@ -71,7 +71,7 @@ trend-analyzer/
 
 1. Install dependencies:pip install -r requirements.txt
 
-2. Set your API key:export YOUTUBE_API_KEY= "AIzaSyAh0W2Iy2fo2XdbKqKNjwRrd5P5BYHclsM"
+2. Set your API key:export YOUTUBE_API_KEY= "my_yt_key"
 
 3. Run scraper:python run_daily.py
 
