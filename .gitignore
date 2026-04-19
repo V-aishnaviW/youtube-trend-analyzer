@@ -1,0 +1,4 @@
+youtube_trends.db
+.env
+__pycache__/
+*.pyc
