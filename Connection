@@ -1,0 +1,79 @@
+-- Checking null values
+SELECT *
+FROM videos
+WHERE video_id IS NULL
+   OR channel_id IS NULL;
+
+
+--Top Videos by Views
+SELECT v.title,
+       SUM(s.views) AS total_views
+FROM videos v
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY v.title
+ORDER BY total_views DESC
+LIMIT 10;
+
+-- Engagement Ratio
+SELECT v.title,
+       SUM(s.likes) AS total_likes,
+       SUM(s.views) AS total_views,
+       SUM(s.likes) * 1.0 / SUM(s.views) AS engagement_ratio
+FROM videos v
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY v.title
+ORDER BY engagement_ratio DESC;
+
+--Total videos per category
+SELECT c.category_name,
+       COUNT(v.video_id) AS total_videos
+FROM categories c
+JOIN video_categories vc ON c.category_id = vc.category_id
+JOIN videos v ON vc.video_id = v.video_id
+GROUP BY c.category_name;
+
+--Avg views per category
+SELECT c.category_name,
+       AVG(s.views) AS avg_views
+FROM categories c
+JOIN video_categories vc ON c.category_id = vc.category_id
+JOIN videos v ON vc.video_id = v.video_id
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY c.category_name;
+
+--Hashtag Queries
+SELECT h.hashtag_name,
+       COUNT(v.video_id) AS total_videos,
+       AVG(s.views) AS avg_views
+FROM hashtags h
+JOIN video_hashtags vh ON h.hashtag_id = vh.hashtag_id
+JOIN videos v ON v.video_id = vh.video_id
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY h.hashtag_name
+HAVING COUNT(v.video_id) > 5;
+
+--Total videos per channel
+SELECT c.channel_name,
+       COUNT(v.video_id) AS total_videos
+FROM channels c
+JOIN videos v ON c.channel_id = v.channel_id
+GROUP BY c.channel_name;
+
+--Avg views per channel
+SELECT c.channel_name,
+       AVG(s.views) AS avg_views
+FROM channels c
+JOIN videos v ON c.channel_id = v.channel_id
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY c.channel_name
+ORDER BY avg_views DESC;
+
+-- viideos that is growing 
+SELECT v.title,
+       MAX(s.views) AS max_views,
+       MIN(s.views) AS min_views,
+       MAX(s.views) - MIN(s.views) AS growth
+FROM videos v
+JOIN video_snapshots s ON v.video_id = s.video_id
+GROUP BY v.title
+ORDER BY growth DESC;
