@@ -4,7 +4,7 @@ import re
 from isodate import parse_duration
 from datetime import datetime
 
-API_KEY = "AIzaSyAh0W2Iy2fo2XdbKqKNjwRrd5P5BYHclsM"
+API_KEY = "mnjgtfughy"
 youtube = build("youtube", "v3", developerKey=API_KEY)
 
 
